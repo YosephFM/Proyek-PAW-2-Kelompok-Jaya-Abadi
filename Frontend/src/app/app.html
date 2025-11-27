@@ -201,70 +201,70 @@
         </div>
       </div>
 
-      <div class="participants-list">
-        <!-- kartu statis — contoh tampilan tanpa tombol aksi, dengan no HP -->
-        <div class="participant-card">
-          <div class="avatar">AN</div>
-          <div class="p-meta">
-            <div class="p-name">Adi Nugroho</div>
-            <div class="p-sub meta-sub-row">
-              <span>adi@example.com</span>
-              <span class="level-badge">Beginner</span>
-            </div>
-
-            <div class="schedule">Hari: Senin &amp; Rabu · Jam: 18:00 - 19:30</div>
-            <div class="phone">No HP: 0812-3456-7890</div>
-          </div>
-        </div>
-
-        <div class="participant-card">
-          <div class="avatar" style="background:linear-gradient(135deg,#f97316,#db2777)">SR</div>
-          <div class="p-meta">
-            <div class="p-name">Siti Rahma</div>
-            <div class="p-sub meta-sub-row">
-              <span>siti@example.com</span>
-              <span class="level-badge" style="background: color-mix(in srgb, var(--electric-violet) 9%, transparent); color:var(--electric-violet)">Intermediate</span>
-            </div>
-
-            <div class="schedule">Hari: Selasa &amp; Kamis · Jam: 19:00 - 20:30</div>
-            <div class="phone">No HP: 0821-9876-5432</div>
-          </div>
-        </div>
-
-        <div class="participant-card">
-          <div class="avatar" style="background:linear-gradient(135deg,#10b981,#06b6d4)">BS</div>
-          <div class="p-meta">
-            <div class="p-name">Budi Santoso</div>
-            <div class="p-sub meta-sub-row">
-              <span>budi@example.com</span>
-              <span class="level-badge">Beginner</span>
-            </div>
-
-            <div class="schedule">Hari: Sabtu · Jam: 09:00 - 11:00</div>
-            <div class="phone">No HP: 0857-1122-3344</div>
-          </div>
-        </div>
-
-        <!-- tambahan peserta baru -->
-        <div class="participant-card">
-          <div class="avatar" style="background:linear-gradient(135deg,#ef4444,#f59e0b)">RA</div>
-          <div class="p-meta">
-            <div class="p-name">Rina Anggraini</div>
-            <div class="p-sub meta-sub-row">
-              <span>rina.anggraini@example.com</span>
-              <span class="level-badge" style="background: rgba(14,165,233,0.08); color:#0ea5e9">Advanced</span>
-            </div>
-
-            <div class="schedule">Hari: Rabu &amp; Jumat · Jam: 17:30 - 19:00</div>
-            <div class="phone">No HP: 0813-5566-7788</div>
-          </div>
-        </div>
-
-        <!-- tambahkan kartu lain sesuai kebutuhan -->
+      <div id="participants-list" class="participants-list" aria-live="polite">
+        <!-- konten akan di-render oleh skrip -->
+        <div style="color:#64748b">Memuat peserta…</div>
       </div>
     </div>
   </div>
+  <script>
+(function(){
+  const API = 'http://localhost:3000/api/participants'; // sesuaikan jika backend di port/host lain
+  const listEl = document.getElementById('participants-list');
+
+  function initials(name){
+    return (name || '').split(' ').map(n=>n[0]||'').slice(0,2).join('').toUpperCase();
+  }
+
+  function cardHtml(p){
+    const bg = p._avatarBg || ''; // optional
+    return `
+      <article class="participant-card">
+        <div class="avatar" style="${bg}">${initials(p.name)}</div>
+        <div class="p-meta">
+          <div class="p-name">${(p.name||'--')}</div>
+          <div class="p-sub meta-sub-row">
+            <span>${(p.email||'--')}</span>
+            <span class="level-badge">${(p.level||'-')}</span>
+          </div>
+          <div class="schedule">Hari: ${(p.days||'-')} · Jam: ${(p.time||'-')}</div>
+          <div class="phone">No HP: ${(p.phone||'-')}</div>
+        </div>
+      </article>
+    `;
+  }
+
+  async function load(){
+    listEl.innerHTML = '<div style="color:#64748b">Memuat peserta…</div>';
+    try{
+      const res = await fetch(API);
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const arr = Array.isArray(data) ? data : (data.Peserta || data.participants || []);
+      if(!arr.length){
+        listEl.innerHTML = '<div style="color:#64748b">Tidak ada peserta</div>';
+        return;
+      }
+      listEl.innerHTML = arr.map(cardHtml).join('');
+    }catch(err){
+      console.error(err);
+      listEl.innerHTML = '<div style="color:#ff4d4f">Gagal memuat data. Periksa backend (http://localhost:3000) dan CORS.</div>';
+    }
+  }
+
+  // load on start
+  load();
+
+  // expose for debugging
+  window.appLoadParticipants = load;
+})();
+</script>
 </main>
+
+<!-- tambahkan skrip ini sebelum router-outlet / akhir file -->
+
+
+
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 <!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
