@@ -1,0 +1,58 @@
+.pkbi-controls{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.search input{padding:10px;border-radius:10px;border:1px solid #e7f0fb;background:#fbfdff}
+.pkbi-card .pkbi-controls{margin-bottom:18px}
+.pkbi-table{background:transparent;border-radius:12px;padding:0}
+.pkbi-table table{width:100%;border-collapse:collapse}
+.pkbi-table thead th{padding:12px;text-align:left;color:var(--muted)}
+.pkbi-table tbody td{padding:12px;border-top:1px solid #f4f7fb}
+.badge{padding:7px 12px;border-radius:999px;color:#fff;font-weight:700}
+.badge.success{background:var(--success)}
+.badge.failed{background:var(--danger)}
+.badge.pending{background:var(--warning);color:#111}
+.pkbi-footer{margin-top:10px;color:var(--muted)}
+
+/* preview row styling */
+.preview-row{background:linear-gradient(90deg, rgba(0,128,128,0.03), rgba(0,128,128,0.01));}
+.preview-row td{font-style:italic;color:var(--muted)}
+.preview-row .badge{opacity:0.9}
+
+.pkbi-form{background:var(--card);padding:14px;border-radius:12px;margin-bottom:14px}
+.pkbi-form .form-row{display:flex;gap:10px;align-items:center}
+.pkbi-form input{padding:10px;border-radius:10px;border:1px solid #e7f0fb;background:#fbfdff}
+.pkbi-form select{padding:10px;border-radius:8px;border:1px solid #e7f0fb}
+.pkbi-form h3{margin:0 0 8px 0}
+.pkbi-table tbody tr td button{margin-left:6px}
+
+/* make table responsive inside card */
+.table-responsive{overflow-x:auto}
+.pkbi-form .form-row{flex-wrap:wrap}
+.pkbi-form .form-row input{min-width:180px}
+.pkbi-form .form-row select{min-width:160px}
+.pkbi-form .form-row input[placeholder*="Jam"]{min-width:200px}
+
+/* spinner inside button */
+.btn-spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.6);border-top-color:rgba(255,255,255,1);border-radius:50%;animation:spin .8s linear infinite}
+
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* row appear animation fallback */
+.row-appear{animation:rowIn .28s ease both}
+@keyframes rowIn{from{opacity:0;transform:translateY(6px) scale(0.995)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* disabled form look */
+input[disabled],select[disabled]{opacity:.7}
+
+/* small improvements for action buttons inside table */
+.pkbi-table td .btn{padding:6px 10px;border-radius:8px;font-size:0.9rem}
+.pkbi-table td .btn.primary{padding:6px 10px}
+.pkbi-table tbody tr:hover td .btn{transform:translateY(-1px)}
+
+/* header color accent */
+.pkbi-card .pkbi-header .title h1{color:var(--accent)}
+.pkbi-card .pkbi-header .lead{color:var(--muted)}
+
+/* validation styles */
+.field{display:flex;flex-direction:column}
+.field input.invalid, .field select.invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(220,38,38,0.06)}
+.error-text{color:var(--danger);font-size:0.82rem;margin-top:6px}
+
