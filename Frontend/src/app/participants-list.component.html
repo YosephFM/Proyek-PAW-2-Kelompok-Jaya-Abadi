@@ -1,0 +1,113 @@
+<section class="pkbi-controls">
+  <div class="search">
+    <label for="q">Cari peserta</label>
+    <input id="q" [(ngModel)]="filter" placeholder="nama atau email" />
+  </div>
+  <div class="actions">
+    <button class="btn" (click)="startAdd()">Tambah</button>
+    <button class="btn" (click)="load()">Refresh</button>
+  </div>
+</section>
+
+<section class="pkbi-form">
+  <h3 *ngIf="!editingId">Tambah peserta</h3>
+  <h3 *ngIf="editingId">Edit peserta</h3>
+  <div class="form-row">
+    <div class="field">
+      <input placeholder="Nama" [(ngModel)]="formName" [disabled]="saving" (blur)="formNameTouched=true" [class.invalid]="formNameTouched && !isNameValid" aria-invalid="{{formNameTouched && !isNameValid}}" />
+      <small class="error-text" *ngIf="formNameTouched && !isNameValid">Nama minimal 2 karakter.</small>
+    </div>
+    <div class="field">
+      <input placeholder="Email" [(ngModel)]="formEmail" [disabled]="saving" (blur)="formEmailTouched=true" [class.invalid]="formEmailTouched && !isEmailValid" aria-invalid="{{formEmailTouched && !isEmailValid}}" />
+      <small class="error-text" *ngIf="formEmailTouched && !isEmailValid">Masukkan email yang valid.</small>
+    </div>
+    <div class="field">
+      <select [(ngModel)]="formLevel" [disabled]="saving" (blur)="formLevelTouched=true" [class.invalid]="formLevelTouched && !isLevelValid">
+        <option value="" selected disabled>Level</option>
+        <option value="Pemula">Pemula</option>
+        <option value="Menengah">Menengah</option>
+        <option value="Lanjutan">Lanjutan</option>
+      </select>
+      <small class="error-text" *ngIf="formLevelTouched && !isLevelValid">Pilih level peserta.</small>
+    </div>
+    <div class="field">
+      <select [(ngModel)]="formHari" [disabled]="saving" (blur)="formHariTouched=true" [class.invalid]="formHariTouched && !isHariValid">
+        <option>Senin - Rabu</option>
+        <option>Selasa - Kamis</option>
+        <option>Rabu - Jumat</option>
+        <option>Sabtu</option>
+      </select>
+    </div>
+    <div class="field">
+      <input placeholder="Jam (mis: 09:00 - 11:00)" [(ngModel)]="formJam" [disabled]="saving" (blur)="formJamTouched=true" [class.invalid]="formJamTouched && !isJamFormatValid" aria-invalid="{{formJamTouched && !isJamFormatValid}}" />
+      <small class="error-text" *ngIf="formJamTouched && !isJamFormatValid">Format jam harus "HH:MM - HH:MM" dan waktu mulai harus lebih awal.</small>
+    </div>
+    <div class="field">
+      <input type="date" placeholder="Tanggal" [(ngModel)]="formTanggal" [disabled]="saving" (blur)="formTanggalTouched=true" [class.invalid]="formTanggalTouched && !isTanggalValid" aria-invalid="{{formTanggalTouched && !isTanggalValid}}" />
+      <small class="error-text" *ngIf="formTanggalTouched && !isTanggalValid">Pilih tanggal.</small>
+    </div>
+    <button class="btn primary" (click)="save()" [disabled]="saving || !isFormValid">
+      <span *ngIf="!saving">Simpan</span>
+      <span *ngIf="saving" class="btn-spinner" aria-hidden></span>
+    </button>
+    <button class="btn" (click)="cancelEdit()" [disabled]="saving">Batal</button>
+  </div>
+</section>
+
+<section class="pkbi-table">
+  <div class="table-responsive">
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Email</th>
+          <th>Level</th>
+          <th>Hari</th>
+          <th>Jam</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody [@listAnimation]="filtered.length">
+        <!-- live preview row while typing (not persisted) -->
+        <tr *ngIf="preview" class="preview-row" [@rowState]>
+          <td>{{ preview.name || '—' }}</td>
+          <td>{{ preview.email || '—' }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'success': preview.level === 'Menengah',
+              'failed': preview.level === 'Lanjutan',
+              'pending': preview.level === 'Pemula'
+            }">{{ preview.level || 'Pemula' }}</span>
+          </td>
+          <td>{{ preview.hari || '—' }}</td>
+          <td>{{ preview.tanggal ? (preview.jam + ' • ' + preview.tanggal) : (preview.jam || '—') }}</td>
+          <td>
+            <button class="btn" (click)="$event.stopPropagation(); startAdd()">Hapus</button>
+          </td>
+        </tr>
+        <tr *ngFor="let p of filtered" [@rowState] tabindex="0" role="button" (click)="startEdit(p)">
+          <td>{{ p.name }}</td>
+          <td>{{ p.email }}</td>
+          <td>
+            <span class="badge" [ngClass]="{
+              'success': p.level === 'Menengah',
+              'failed': p.level === 'Lanjutan',
+              'pending': p.level === 'Pemula'
+            }">{{ p.level }}</span>
+          </td>
+          <td>{{ p.hari }}</td>
+          <td>{{ p.jam }}</td>
+          <td>
+            <button class="btn" (click)="$event.stopPropagation(); startEdit(p)">Edit</button>
+            <button class="btn" (click)="$event.stopPropagation(); deleteParticipant(p.id)">Hapus</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </section>
+
+  <footer class="pkbi-footer">
+    Jumlah peserta: {{ (filtered.length + (preview ? 1 : 0)) }}
+    <span *ngIf="preview && filtered.length > 0">(termasuk preview)</span>
+  </footer>

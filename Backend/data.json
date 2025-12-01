@@ -1,0 +1,35 @@
+
+[
+	{
+		"id": 1,
+		"name": "Andi Prasetyo",
+		"email": "andi.prasetyo@example.com",
+		"level": "Intermediate",
+        "hari": "Senin - Rabu",
+		"jam": "09:00 - 11:00"
+	},
+	{
+		"id": 2,
+		"name": "Siti Rahma",
+		"email": "siti.rahma@example.com",
+		"level": "Beginner",
+		"hari": "Selasa - Kamis",
+		"jam": "09:00 - 11:00"
+	},
+	{
+		"id": 3,
+		"name": "Budi Santoso",
+		"email": "budi.santoso@example.com",
+		"level": "Advanced",
+		"hari": "Rabu - Jumat",
+		"jam": "09:00 - 11:00"
+	},
+	{
+		"id": 4,
+		"name": "Rina Wijaya",
+		"email": "rina.wijaya@example.com",
+		"level": "Intermediate",
+		"hari": "Rabu - Jumat",
+		"jam": "09:00 - 11:00"
+	}
+]
