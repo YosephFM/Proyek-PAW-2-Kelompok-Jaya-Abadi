@@ -1,16 +1,33 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { RouterOutlet, RouterModule, provideRouter } from '@angular/router';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ParticipantService } from './services/participant.service';
+import { DashboardComponent } from './dashboard.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule, CommonModule, FormsModule],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
+  imports: [RouterOutlet, RouterModule, CommonModule, FormsModule],
+  template: `
+    <nav class="nav">
+      <div class="nav-brand">Kursus Bahasa Inggris Jaya Abadi</div>
+      <div class="nav-links">
+        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <a routerLink="/data" routerLinkActive="active">Data Peserta</a>
+      </div>
+    </nav>
+
+    <router-outlet></router-outlet>
+  `,
+  styles: [`
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: #fff; border-bottom: 1px solid #e2e8f0; }
+    .nav-brand { font-weight: 700; font-size: 18px; }
+    .nav-links { display: flex; gap: 16px; }
+    .nav-links a { text-decoration: none; color: #64748b; padding: 8px 12px; border-radius: 6px; transition: all 0.2s; }
+    .nav-links a.active, .nav-links a:hover { background: linear-gradient(90deg, #06b6d4, #7c3aed); color: #fff; }
+  `]
 })
 export class App implements OnInit {
   protected readonly title = signal('Frontend');
@@ -21,7 +38,6 @@ export class App implements OnInit {
   showForm = signal(false);
   editingId = signal('');
 
-  // form data
   formData = signal({
     name: '',
     email: '',
@@ -76,13 +92,11 @@ export class App implements OnInit {
 
     const id = this.editingId();
     if (id) {
-      // update
       this.svc.update(id, form).subscribe({
         next: () => { this.load(); this.closeForm(); },
         error: err => alert('Gagal update: ' + err.error?.error || err.message)
       });
     } else {
-      // create
       this.svc.create(form).subscribe({
         next: () => { this.load(); this.closeForm(); },
         error: err => alert('Gagal tambah: ' + err.error?.error || err.message)
@@ -113,3 +127,15 @@ export class App implements OnInit {
       .toUpperCase();
   }
 }
+
+// Provide routing and HttpClient with fetch
+export const appConfig = {
+  providers: [
+    provideRouter([
+      { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: 'data', component: App }
+    ]),
+    provideHttpClient(withFetch())
+  ]
+};

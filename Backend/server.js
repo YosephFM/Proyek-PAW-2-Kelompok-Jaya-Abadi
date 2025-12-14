@@ -14,17 +14,12 @@ function readData() {
     const raw = fs.readFileSync(DATA_FILE, 'utf8').trim();
     if (!raw) return [];
     const parsed = JSON.parse(raw);
-    
-    // cek apakah array langsung
     if (Array.isArray(parsed)) return parsed;
-    
-    // cek wrapper object dengan key "Peserta " (perhatikan spasi)
     if (parsed && typeof parsed === 'object') {
       if (Array.isArray(parsed['Peserta '])) return parsed['Peserta '];
       if (Array.isArray(parsed.Peserta)) return parsed.Peserta;
       if (Array.isArray(parsed.participants)) return parsed.participants;
     }
-    
     return [];
   } catch (err) {
     console.error('readData error', err);
@@ -34,7 +29,6 @@ function readData() {
 
 function writeData(data) {
   try {
-    // simpan sebagai array biasa untuk cleaner
     fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf8');
     return true;
   } catch (err) {
@@ -57,7 +51,28 @@ function validateParticipant(payload) {
 
 /* Routes */
 
-// GET all
+// GET dashboard summary
+app.get('/api/dashboard', (req, res) => {
+  try {
+    const data = readData();
+    const total = data.length;
+    const levels = data.reduce((acc, p) => {
+      acc[p.level] = (acc[p.level] || 0) + 1;
+      return acc;
+    }, {});
+    const summary = {
+      totalParticipants: total,
+      levels: levels,
+      recent: data.slice(-5).reverse() // 5 peserta terbaru
+    };
+    res.json(summary);
+  } catch (err) {
+    console.error('dashboard error', err);
+    res.status(500).json({ error: 'server error' });
+  }
+});
+
+// GET all participants
 app.get('/api/participants', (req, res) => {
   const data = readData();
   res.json(data);

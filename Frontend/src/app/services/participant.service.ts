@@ -8,6 +8,10 @@ export class ParticipantService {
   
   constructor(private http: HttpClient) {}
 
+  getDashboard(): Observable<any> {
+    return this.http.get<any>(`${this.base}/dashboard`);
+  }
+
   getAll(): Observable<any[]> {
     return this.http.get<any[]>(`${this.base}/participants`);
   }
