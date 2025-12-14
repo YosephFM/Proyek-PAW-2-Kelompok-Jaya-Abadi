@@ -1,0 +1,28 @@
+<h1>Dashboard Kursus Bahasa Inggris Jaya Abadi</h1>
+
+<div class="kpi">
+  <div>Total Peserta: {{ total }}</div>
+  <div>Beginner: {{ countBeginner }}</div>
+  <div>Intermediate: {{ countIntermediate }}</div>
+  <div>Advanced: {{ countAdvanced }}</div>
+</div>
+
+<h3>Peserta Terbaru</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Nama</th>
+      <th>Level</th>
+      <th>Hari</th>
+      <th>Jam</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of participants | slice:0:5">
+      <td>{{ p.name }}</td>
+      <td>{{ p.level }}</td>
+      <td>{{ p.days }}</td>
+      <td>{{ p.time }}</td>
+    </tr>
+  </tbody>
+</table>

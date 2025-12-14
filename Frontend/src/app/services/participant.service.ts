@@ -31,4 +31,7 @@ export class ParticipantService {
   delete(id: string): Observable<any> {
     return this.http.delete(`${this.base}/participants/${id}`);
   }
+  
+
+  
 }
