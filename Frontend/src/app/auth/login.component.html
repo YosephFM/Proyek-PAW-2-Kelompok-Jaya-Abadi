@@ -1,17 +1,44 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-4">
-      <div class="card shadow">
-        <div class="card-header text-center fw-bold">
-          Login
-        </div>
-        <div class="card-body">
-          <input type="text" class="form-control mb-3" placeholder="Username" [(ngModel)]="username">
-          <input type="password" class="form-control mb-3" placeholder="Password" [(ngModel)]="password">
-          <div class="text-danger mb-2">{{ error }}</div>
-          <button class="btn btn-primary w-100" (click)="login()">Login</button>
-        </div>
+
+
+
+<div class="login-wrapper d-flex align-items-center justify-content-center">
+  <div class="card login-card shadow-lg">
+    <div class="card-body p-4">
+
+      <h4 class="text-center fw-bold mb-1">Selamat Datang</h4>
+      <p class="text-center text-muted mb-4">
+        Silakan login untuk melanjutkan
+      </p>
+
+      <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Masukkan username"
+          [(ngModel)]="username"
+        />
       </div>
+
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Masukkan password"
+          [(ngModel)]="password"
+        />
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger py-2 text-center">
+        {{ error }}
+      </div>
+
+      <button class="btn btn-primary w-100 mt-2" (click)="login()">
+        Login
+      </button>
+
+      
     </div>
   </div>
 </div>

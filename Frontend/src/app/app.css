@@ -1,0 +1,21 @@
+/* Ensure root elements fill the viewport so flex centering works */
+html, body, app-root {
+	height: 100%;
+	margin: 0;
+}
+
+/* Login wrapper centering */
+.login-wrapper{
+	min-height:100vh;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background: linear-gradient(180deg, #fbfdff 0%, #f3f7ff 100%);
+}
+
+.login-wrapper {
+  border: 2px solid red;
+}
+
+.login-card{max-width:420px;width:100%;border-radius:12px;overflow:hidden}
+
