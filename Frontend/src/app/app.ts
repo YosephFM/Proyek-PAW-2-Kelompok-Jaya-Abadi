@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard.component';
 @Component({
   selector: 'app-root',
   standalone: true,
+<<<<<<< Updated upstream
   imports: [RouterOutlet, RouterModule, CommonModule, FormsModule],
   template: `
     <nav class="nav">
@@ -28,6 +29,11 @@ import { DashboardComponent } from './dashboard.component';
     .nav-links a { text-decoration: none; color: #64748b; padding: 8px 12px; border-radius: 6px; transition: all 0.2s; }
     .nav-links a.active, .nav-links a:hover { background: linear-gradient(90deg, #06b6d4, #7c3aed); color: #fff; }
   `]
+=======
+  imports: [RouterOutlet, HttpClientModule, CommonModule, FormsModule],
+  templateUrl: './app.html',
+  styleUrls: ['./app.css']
+>>>>>>> Stashed changes
 })
 export class App implements OnInit {
   protected readonly title = signal('Frontend');
