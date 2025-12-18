@@ -1,12 +1,16 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+
 
 @Component({
   standalone: true,
   selector: 'app-login',
-  imports: [FormsModule],
-  templateUrl: './login.component.html'
+  imports: [FormsModule, CommonModule],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   @Output() success = new EventEmitter<void>();
@@ -15,13 +19,13 @@ export class LoginComponent {
   password = '';
   error = '';
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   login(): void {
     if (this.auth.login(this.username, this.password)) {
-    window.location.href = '/dashboard';
+      this.router.navigate(['/dashboard']);
 
-      this.success.emit(); // 🔥 trigger dashboard
+      this.success.emit(); 
     } else {
       this.error = 'Username atau password salah';
     }

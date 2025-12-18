@@ -1,0 +1,16 @@
+/* Login wrapper centering */
+.login-wrapper{
+	min-height:100vh;
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	background: linear-gradient(180deg, #fbfdff 0%, #f3f7ff 100%);
+}
+
+.login-wrapper {
+  border: 2px solid red;
+}
+
+.login-card{max-width:420px;width:100%;border-radius:12px;overflow:hidden}
+
+.login-card .card-body{padding:2.5rem 2rem}

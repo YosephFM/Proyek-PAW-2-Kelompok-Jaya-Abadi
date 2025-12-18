@@ -2,6 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface Participant {
+  id?: number;
+  name: string;
+  email: string;
+  phone: string;
+  level: string;
+  days: string;
+  time: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ParticipantService {
   private base = 'http://localhost:3000/api';
@@ -24,7 +34,8 @@ export class ParticipantService {
     return this.http.put(`${this.base}/participants/${id}`, payload);
   }
 
-  delete(id: string): Observable<any> {
-    return this.http.delete(`${this.base}/participants/${id}`);
-  }
+  delete(id: number) {
+  return this.http.delete<void>(`${this.base}/participants/${id}`);
+}
+  
 }
